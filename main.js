@@ -45,74 +45,160 @@ while (count < gridWidth * gridWidth) {
 /***********
  * QUERIES *
  ***********/
-let clickMouse = false;
+// let clickMouse = false;
 
-const getColor = (element) => {
-  return element.classList[1];
-};
+// const getColor = (element) => {
+//   return element.classList[1];
+// };
 
-const clickSquare = (event) => {
-  const square = event.target;
-  const brush = document.querySelector(".current-brush");
-  square.classList.replace(getColor(square)), getColor(brush);
-  mouseDown = false;
-};
+// const userClickSquare = (event) => {
+//   const square = event.target;
+//   const brush = document.querySelector(".current-brush");
+//   square.classList.replace(getColor(square)), getColor(brush);
+//   mouseDown = false;
+// };
 
-const mouseOverSquare = (event) => {
-  if (mouseDown) {
-    const square = event.target;
-    const brush = document.querySelector(".current-brush");
-    square.classList.replace(getColor(square), getColor(brush));
-  }
-};
+// const mouseOverSquare = (event) => {
+//   if (mouseDown) {
+//     const square = event.target;
+//     const brush = document.querySelector(".current-brush");
+//     square.classList.replace(getColor(square), getColor(brush));
+//   }
+// };
 
-const squares = document.querySelectorAll(".square");
+// const squares = document.querySelectorAll(".square");
 
-for (const square of squares) {
-  square.addEventListener("mouseenter", mouseOverSquare);
-  square.addEventListener("click", clickSquare);
-}
+// for (const square of squares) {
+//   square.addEventListener("mouseenter", mouseOverSquare);
+//   square.addEventListener("click", userClickSquare);
+// }
 
-function clickPaletteColor(event) {
-  const brush = document.querySelector(".current-brush");
-  brush.classList.replace(getColor(brush), getColor(event.target));
-}
+// function clickPaletteColor(event) {
+//   const brush = document.querySelector(".current-brush");
+//   brush.classList.replace(getColor(brush), getColor(event.target));
+// }
 
-const paletteColors = document.querySelectorAll(".palette-color");
+// const paletteColors = document.querySelectorAll(".palette-color");
 
+// for (const paletteColor of paletteColors) {
+//   paletteColor.addEventListener("click", clickPaletteColor);
+// }
+
+// document.body.addEventListener("mousedown", () => {
+//   mouseDown = true;
+// });
+
+// document.body.addEventListener("mouseup", () => {
+//   mouseDown = false;
+// });
+
+// Alternative Solution with Dark Mode   
+// =======================
+// Changing brush color
+// =======================
+
+// Get the palette color HTML elements
+const paletteColors = document.querySelectorAll('.palette-color');
+
+// Get the current brush HTML element
+const currentBrush = document.querySelector('.current-brush');
+
+// For each palette color
 for (const paletteColor of paletteColors) {
-  paletteColor.addEventListener("click", clickPaletteColor);
+
+  // When the palette color is clicked
+  paletteColor.addEventListener('click', function () {
+
+    // Get the current brush color class
+    const brushColorBefore = currentBrush.classList[1];
+
+    // The the color class of the clicked palette color
+    const newBrushColor = paletteColor.classList[1];
+
+    // Replace the brush's color class with the palette color class
+    currentBrush.classList.replace(brushColorBefore, newBrushColor);
+  });
 }
 
-document.body.addEventListener("mousedown", () => {
-  mouseDown = true;
+// ==================================
+// Changing squares colors with click
+// ==================================
+
+// Get all squares
+const squares = document.querySelectorAll('.square');
+
+// For each square
+for (const square of squares) {
+
+  // Add an event listener that does something when a square is clicked
+  square.addEventListener('click', function () {
+
+    // Get the classes of the brush in an array
+    const brushClasses = currentBrush.className.split(' ');
+
+    // Get the second class of the brush (the color class)
+    const brushColor = brushClasses[1];
+
+    // Set the square's class to 'square ' + color-class
+    square.className = `square ${brushColor}`;
+  });
+}
+
+// ===========================================
+// Changing squares colors with click and drag
+// ===========================================
+
+// Event listeners events that exist:
+// * no built-in click and drag
+// * 'mousedown'  => fires when user clicks down mouse
+// * 'mouseup'    => fires when user lifts mouse
+// * 'mouseenter' => fires when user hovers over element for first time
+
+// Global variable that indicates if the user is currently clicking (click down)
+let penDown = false;
+
+// If user clicks down
+document.addEventListener('mousedown', function () {
+  penDown = true;
 });
 
-document.body.addEventListener("mouseup", () => {
-  mouseDown = false;
+// If user clicks up
+document.addEventListener('mouseup', function () {
+  penDown = false;
 });
 
-// // Alternative Version
-// // Get an array of the brush color HTML elements
-// const brushColors = document.querySelectorAll('.palette-color');
+// For each square
+for (const square of squares) {
 
-// // Get the current brush color HTML element
-// const currentColor = document.querySelector('.current-brush');
+  // Add a 'mouseenter' event listener
+  square.addEventListener('mouseenter', function () {
 
-// // Handle a click on the palette
-// function handlePaletteClick(event) {
-//     // Get the HTML element that was clicked
-//     const paletteColor = event.target;
+    // If the pen is down when the mouse enters the square
+    if (penDown) {
 
-//     // Get the color class of the clicked HTML element
-//     const color = paletteColor.classList[1];
+      // Get the classes of the brush in an array
+      const brushClasses = currentBrush.className.split(' ');
 
-//     // Set the classes of the currentColor HTML element
-//     currentColor.className = 'current-brush ' + color;
-// }
-// // For each brush color HTML element...
-// for (const brushColor of brushColors) {
-//   // Add a click listener
-//   console.log('click happened');
-//     brushColor.addEventListener('click', handlePaletteClick);
-// }
+      // Get the second class of the brush (the color class)
+      const brushColor = brushClasses[1];
+
+      // Set the square's class to 'square ' + color-class
+      square.className = `square ${brushColor}`;
+    }
+  });
+}
+
+// =========
+// Dark mode
+// =========
+
+// Get dark mode button
+const darkModeButton = document.querySelector('#dark-mode');
+
+// When clicked
+darkModeButton.addEventListener('click', function () {
+  
+  // Toggle .dark-mode class on the .app element
+  const app = document.querySelector('.app');
+  app.classList.toggle('dark-mode');
+});
