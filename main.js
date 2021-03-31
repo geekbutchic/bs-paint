@@ -1,4 +1,4 @@
-/*******************
+ /*******************
  * OUR HELPER CODE *
 *******************/
 
@@ -17,7 +17,7 @@
  */
 const gridWidth = 10;
 let count = 0;
-while (count <= gridWidth * gridWidth) {
+while (count < gridWidth * gridWidth) {
   const canvas = document.querySelector('.canvas');
   const div = document.createElement('div');
   div.className = 'square color-5';
@@ -45,29 +45,76 @@ while (count <= gridWidth * gridWidth) {
 /***********
  * QUERIES *
 ***********/
+let clickMouse = false;
 
-// Add queries for all your squares, palette colors, and brush here.
-// (Note the singular or plural used in that sentence!)
+const getColor = (element) => {
+  return element.classList[1];
+}
+
+const clickSquare = (event) => {
+  const square = event.target;
+  const brush = document.querySelector('.current-brush');
+      square.classList.replace(getColor(square)),(getColor(brush));
+      mouseDown = false;
+}
+
+const mouseOverSquare = (event) => {
+  if (mouseDown) {
+    const square = event.target;
+    const brush = document.querySelector('.current-brush');
+    square.classList.replace(getColor(square),getColor(brush));  
+  }
+}
+
+const squares = document.querySelectorAll('.square') 
+
+for (const square of squares) {
+  square.addEventListener('mouseenter', mouseOverSquare)
+  square.addEventListener('click', clickSquare)
+}
+
+function clickPaletteColor (event) {
+  const brush = document.querySelector('.current-brush');
+  brush.classList.replace(getColor(brush),getColor(event.target));
+}
+
+const paletteColors = document.querySelectorAll('.palette-color');
+
+for (const paletteColor of paletteColors) {
+  paletteColor.addEventListener('click', clickPaletteColor)
+}
+
+document.body.addEventListener('mousedown', () => {
+  mouseDown = true;
+})
+
+document.body.addEventListener('mouseup', () => {
+  mouseDown = false;
+})
 
 
+// // Alternative Version 
+// // Get an array of the brush color HTML elements
+// const brushColors = document.querySelectorAll('.palette-color');
 
-/****************************
- * EVENT LISTENER FUNCTIONS *
-****************************/
+// // Get the current brush color HTML element
+// const currentColor = document.querySelector('.current-brush');
 
-// Now add some functions to handle clicking one particular square
-// and clicking one particular palette color. You can leave them
-// empty at first, though a console.log just to know they're being
-// run as event listeners (after the next step is set up) isn't a
-// bad idea for testing purposes.
+// // Handle a click on the palette
+// function handlePaletteClick(event) {
+//     // Get the HTML element that was clicked
+//     const paletteColor = event.target;
 
+//     // Get the color class of the clicked HTML element
+//     const color = paletteColor.classList[1];
 
+//     // Set the classes of the currentColor HTML element
+//     currentColor.className = 'current-brush ' + color; 
+// }
+// // For each brush color HTML element...
+// for (const brushColor of brushColors) {
+//   // Add a click listener
+//   console.log('click happened');
+//     brushColor.addEventListener('click', handlePaletteClick);
+// }
 
-/**************************
- * WIRING IT ALL TOGETHER *
-**************************/
-
-// Now: wiring up our event listeners to our html node elements.
-// You'll need to add the appropriate event listener for each
-// square and for each palette color from the functions you
-// wrote above.

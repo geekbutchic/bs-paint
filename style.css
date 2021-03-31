@@ -1,3 +1,8 @@
+
+html {
+  background-color: cornsilk;
+}
+
 .app {
   display: flex;
   height: 500px;
@@ -63,21 +68,21 @@
 }
 
 .color-1 {
-color: red;
+background-color:rgb(175, 148, 211);
 }
 
 .color-2 {
-color: blue;
+background-color: rgb(142, 142, 236);
 }
 
 .color-3 {
-color: green;
+background-color: cadetblue;
 }
 
 .color-4 {
-color: yellow;
+background-color: cornflowerblue;
 }
 
 .color-5 {
-color: orange;
+background-color: azure;
 }
