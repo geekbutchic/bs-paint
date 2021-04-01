@@ -51,12 +51,14 @@ let mouseDown = false;
 const getColor = (element) => {
   return element.classList[1];
 };
-
+  
 const userClickSquare = (event) => {
   const square = event.target;
   const brush = document.querySelector(".current-brush");
-  square.classList.replace(getColor(square), getColor(brush))
-  mouseDown = false ;
+  // square.classList.replace(getColor(square), getColor(brush));
+  // Without Helper Function
+  square.classList.replace(square.classList[1], brush.classList[1]);
+  mouseDown = false;
 };
 
 const mouseOverSquare = (event) => {
@@ -72,18 +74,26 @@ const squares = document.querySelectorAll(".square");
 for (const square of squares) {
   square.addEventListener("mouseenter", mouseOverSquare);
   square.addEventListener("click", userClickSquare);
+}  
+
+// Replaces color of Brush with item that is clicked (event.target )
+// const choosePaletteColor = (event) =>   {
+//   const brush = document.querySelector(".current-brush");
+//   brush.classList.replace(getColor(brush), getColor(event.target));
+// }
+
+// Alternative Method using .remove and .add
+const choosePaletteColor = (event) => {
+  const brush = document.querySelector('.current-brush');
+  brush.classList.remove(getColor(brush));
+  brush.classList.add(getColor(event.target));
 }
 
-// Replaces color of Brush with item that is clicked
-function clickPaletteColor(event) {
-  const brush = document.querySelector(".current-brush");
-  brush.classList.replace(getColor(brush), getColor(event.target));
-}
 
 const paletteColors = document.querySelectorAll(".palette-color");
 
 for (const paletteColor of paletteColors) {
-  paletteColor.addEventListener("click", clickPaletteColor);
+  paletteColor.addEventListener("click", choosePaletteColor);
 }
 
 document.body.addEventListener("mousedown", () => {
